@@ -59,8 +59,7 @@ protected:
 			count = smallest_block_count >> l;
 
 			if (count % 2 == 1) {
-				t_uint16 avail = get_avail_block(
-					pool.stats[l], count);
+				t_uint16 avail = get_avail_block(pool.stats[l], count);
 
 				ASSERT_EQ(avail, count - 1);
 			} else {

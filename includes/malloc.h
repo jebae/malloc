@@ -2,6 +2,16 @@
 # define MALLOC_H
 
 #include <stdio.h>
+#include <sys/mman.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+# include "libft.h"
+#ifdef __cplusplus
+}
+#endif
 
 # define NO_AVAIL_BLOCK	0xFFFF
 
@@ -39,5 +49,12 @@ void		merge_block(t_uint16 idx, t_uint8 level, t_uint8 **stats);
 
 void		free_block(
 	void *ptr, t_uint32 smallest_block_size, t_mem_pool *pool);
+
+/* memory pool */
+t_uint16	get_smallest_block_count(
+	t_uint32 biggest_block_size, t_uint32 mem_size);
+
+t_mem_pool	*init_mem_pool(void *mem, t_uint16 smallest_block_count);
+t_mem_pool	*alloc_mem_pool(t_uint32 mem_size, t_uint32 biggest_block_size);
 
 #endif
