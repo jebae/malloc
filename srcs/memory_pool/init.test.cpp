@@ -22,7 +22,6 @@ TEST(get_smallest_block_count, small)
 		1019);
 }
 
-
 TEST(init_mem_pool, tiny)
 {
 	unsigned char	mem[8 * 4096];

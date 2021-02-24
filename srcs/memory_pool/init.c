@@ -76,6 +76,6 @@ t_mem_pool		*init_mem_pool(void *mem, t_uint16 smallest_block_count)
 	pool->sizes = (t_uint16 *)ptr;
 	ft_memset(pool->sizes, 0, sizeof(t_uint16) * 1024);
 	pool->data = ptr + sizeof(t_uint16) * 1024;
-	pool->next = NULL;
+	pool->next = 0x0;
 	return (pool);
 }

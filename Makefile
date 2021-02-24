@@ -21,7 +21,7 @@ test: $(TEST)
 		-lgtest\
 		$(INCLUDES)\
 		$(LIBS)\
-		$(SRC_DIR)/**/*.c $(TEST)\
+		$(SRC_DIR)/**/*.c $(SRC_DIR)/*.c $(TEST)\
 		-o $@
 
 .PHONY: test

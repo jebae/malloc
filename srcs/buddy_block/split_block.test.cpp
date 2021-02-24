@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "malloc.h"
 
+static t_uint8	STATS[4][128];
+
 class SplitBlockTest: public ::testing::Test {
 protected:
 	t_uint8	*stats[4];
@@ -15,17 +17,11 @@ protected:
 
 			if (count % 8 > 0)
 				size++;
-			stats[i] = (t_uint8 *)malloc(size);
+			stats[i] = STATS[i];
 			memset(stats[i], 0, size);
 
 			sizes[i] = size;
 			i++;
-		}
-	}
-
-	virtual	void	TearDown() {
-		for (int i=0; i < 4; i++) {
-			free(stats[i]);
 		}
 	}
 

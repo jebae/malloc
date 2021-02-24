@@ -83,7 +83,7 @@ void			*alloc_block(
 	t_uint64	relative_addr;
 
 	if (size == 0)
-		return (NULL);
+		return (0x0);
 	level = get_block_level(size, smallest_block_size);
 	idx = NO_AVAIL_BLOCK;
 	avail_level = level;
@@ -95,7 +95,7 @@ void			*alloc_block(
 		avail_level++;
 	}
 	if (idx == NO_AVAIL_BLOCK)
-		return (NULL);
+		return (0x0);
 	if (avail_level != level)
 		idx = split_block(avail_level, level, idx, pool->stats);
 	set_block_stat(idx, 0, pool->stats[level]);

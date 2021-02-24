@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "malloc.h"
 
+static t_uint8	STATS[4][128];
+static t_uint16	SIZES[1024];
+
 class AllocBlockTest: public ::testing::Test {
 protected:
 	t_mem_pool	pool;
@@ -20,22 +23,15 @@ protected:
 
 			if (count % 8 > 0)
 				size++;
-			pool.stats[i] = (t_uint8 *)malloc(size);
+			pool.stats[i] = STATS[i];
 			memset(pool.stats[i], 0, size);
 
 			sizes[i] = size;
 			i++;
 		}
-		pool.sizes = (t_uint16 *)malloc(sizeof(t_uint16) * smallest_block_count);
-		memset(pool.sizes, 0, sizeof(t_uint16) * smallest_block_count);
+		pool.sizes = SIZES;
+		memset(pool.sizes, 0, 1024);
 		pool.data = (t_uint8 *)0x1234;
-	}
-
-	virtual	void	TearDown() {
-		for (int i=0; i < 4; i++) {
-			free(pool.stats[i]);
-		}
-		free(pool.sizes);
 	}
 
 	void			test_by_level(t_uint64 size) {
