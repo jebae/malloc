@@ -10,7 +10,7 @@ class MallocTest: public ::testing::Test {
 	}
 };
 
-int		get_pool_count(t_mem_zone *zone)
+static int		get_pool_count(t_mem_zone *zone)
 {
 	t_mem_pool	*pool = zone->head;
 	int			count = 0;

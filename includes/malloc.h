@@ -34,6 +34,7 @@ typedef enum			e_zone_type
 typedef struct			s_mem_pool
 {
 	struct s_mem_pool	*next;
+	t_uint16			allocated;
 	t_uint8				*stats[4];
 	t_uint16			*sizes;
 	t_uint8				*data;
@@ -80,6 +81,7 @@ t_uint16	get_smallest_block_count(
 
 t_mem_pool	*init_mem_pool(void *mem, t_uint16 smallest_block_count);
 t_mem_pool	*alloc_mem_pool(t_uint32 mem_size, t_uint32 biggest_block_size);
+void		free_mem_pool(t_mem_pool *pool, t_uint64 mem_size);
 
 /* init dynamic memory */
 int			init_dynamic_memory(t_dynamic_mem *dym);

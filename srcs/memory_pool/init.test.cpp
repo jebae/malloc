@@ -33,6 +33,7 @@ TEST(init_mem_pool, tiny)
 
 	ASSERT_EQ((long)pool, (long)mem);
 	ASSERT_EQ((long)pool->next, NULL);
+	ASSERT_EQ(pool->allocated, 0);
 	ASSERT_EQ(pool->stats[0], mem + sizeof(t_mem_pool));
 	ASSERT_EQ(pool->stats[1], mem + sizeof(t_mem_pool) + 128);
 	ASSERT_EQ(pool->stats[2], mem + sizeof(t_mem_pool) + 128 + 64);
@@ -70,6 +71,7 @@ TEST(init_mem_pool, small)
 
 	ASSERT_EQ((long)pool, (long)mem);
 	ASSERT_EQ((long)pool->next, NULL);
+	ASSERT_EQ(pool->allocated, 0);
 	ASSERT_EQ(pool->stats[0], mem + sizeof(t_mem_pool));
 	ASSERT_EQ(pool->stats[1], mem + sizeof(t_mem_pool) + 128);
 	ASSERT_EQ(pool->stats[2], mem + sizeof(t_mem_pool) + 128 + 64);

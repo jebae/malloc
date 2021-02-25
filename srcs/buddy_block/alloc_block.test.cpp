@@ -32,6 +32,7 @@ protected:
 		pool.sizes = SIZES;
 		memset(pool.sizes, 0, 1024);
 		pool.data = (t_uint8 *)0x1234;
+		pool.allocated = 0;
 	}
 
 	void			test_by_level(t_uint64 size) {
@@ -132,13 +133,6 @@ TEST_F(AllocBlockTest, no_available_block)
 		10, smallest_block_size, smallest_block_count, &pool), NULL);
 }
 
-TEST_F(AllocBlockTest, size_0)
-{
-	set_block_stat(0, 1, pool.stats[0]);
-	ASSERT_EQ((long)alloc_block(
-		0, smallest_block_size, smallest_block_count, &pool), NULL);
-}
-
 TEST_F(AllocBlockTest, alloc_all_level_0)
 {
 	init_pool();
@@ -149,6 +143,7 @@ TEST_F(AllocBlockTest, alloc_all_level_0)
 			smallest_block_count, &pool);
 
 		ASSERT_GE(mem, pool.data);
+		ASSERT_EQ(pool.allocated, i + 1);
 	}
 
 	for (t_uint16 i=0; i < smallest_block_count; i++) {
@@ -170,6 +165,7 @@ TEST_F(AllocBlockTest, alloc_all_level_1)
 			smallest_block_count, &pool);
 
 		ASSERT_GE(mem, pool.data);
+		ASSERT_EQ(pool.allocated, i + 1);
 	}
 
 	for (t_uint16 i=0; i < smallest_block_count >> 1; i++) {
@@ -191,6 +187,7 @@ TEST_F(AllocBlockTest, alloc_all_level_2)
 			smallest_block_count, &pool);
 
 		ASSERT_GE(mem, pool.data);
+		ASSERT_EQ(pool.allocated, i + 1);
 	}
 
 	for (t_uint16 i=0; i < smallest_block_count >> 2; i++) {
@@ -212,6 +209,7 @@ TEST_F(AllocBlockTest, alloc_all_level_3)
 			smallest_block_count, &pool);
 
 		ASSERT_GE(mem, pool.data);
+		ASSERT_EQ(pool.allocated, i + 1);
 	}
 
 	for (t_uint16 i=0; i < smallest_block_count >> 3; i++) {

@@ -31,6 +31,8 @@ void	free_block(
 	t_uint16	idx;
 
 	relative_addr = (t_uint8 *)ptr - pool->data;
+	if (relative_addr % smallest_block_size > 0)
+		return ;
 	size = pool->sizes[relative_addr / smallest_block_size];
 	if (size == 0)
 		return ;
@@ -40,4 +42,5 @@ void	free_block(
 	idx = relative_addr / size;
 	set_block_stat(idx, 1, pool->stats[level]);
 	merge_block(idx, level, pool->stats);
+	pool->allocated--;
 }

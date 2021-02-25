@@ -71,6 +71,7 @@ t_mem_pool		*init_mem_pool(void *mem, t_uint16 smallest_block_count)
 	t_mem_pool	*pool;
 
 	pool = (t_mem_pool *)mem;
+	pool->allocated = 0;
 	ptr = (t_uint8 *)mem + sizeof(t_mem_pool);
 	ptr = init_stats(ptr, smallest_block_count, pool->stats);
 	pool->sizes = (t_uint16 *)ptr;

@@ -31,6 +31,7 @@ protected:
 		pool.sizes = SIZES;
 		memset(pool.sizes, 0, sizeof(t_uint16) * smallest_block_count);
 		pool.data = (t_uint8 *)0x1234;
+		pool.allocated = 0;
 	}
 
 	void	is_level_all_zero(t_uint8 level) {
@@ -42,6 +43,7 @@ protected:
 	void	test_by_level(t_uint8 level) {
 		t_uint16	count = smallest_block_count >> level;
 
+		pool.allocated = count;
 		for (t_uint16 i=0; i < count; i++) {
 			pool.sizes[i << level] = smallest_block_size << level;
 		}
@@ -49,6 +51,8 @@ protected:
 		for (t_uint16 i=0; i < count; i++) {
 			free_block(pool.data + (smallest_block_size << level) * i,
 				smallest_block_size, &pool);
+
+			ASSERT_EQ(pool.allocated, count - i - 1);
 		}
 
 		for (t_uint8 l=level; l < 3; l++) {
@@ -95,4 +99,6 @@ TEST_F(FreeBlockTest, non_allocated)
 	free_block(pool.data, smallest_block_size, &pool);
 	free_block(pool.data + smallest_block_size,
 		smallest_block_size, &pool);
+
+	ASSERT_EQ(pool.allocated, 0);
 }

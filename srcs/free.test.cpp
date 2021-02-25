@@ -9,7 +9,7 @@ class FreeTest: public ::testing::Test {
 	}
 };
 
-int		get_pool_count(t_mem_zone *zone)
+static int		get_pool_count(t_mem_zone *zone)
 {
 	t_mem_pool	*pool = zone->head;
 	int			count = 0;
@@ -39,6 +39,18 @@ TEST_F(FreeTest, free_1)
 	free(mem);
 	mem = malloc(1);
 	ASSERT_EQ(mem, ptr);
+}
+
+TEST_F(FreeTest, free_invalid_address)
+{
+	ASSERT_EQ(g_dym.tiny_zone.head->allocated, 0);
+	void	*mem = malloc(100);
+
+	ASSERT_EQ(g_dym.tiny_zone.head->allocated, 1);
+	for (t_uint64 i=1 ; i < 100; i++) {
+		free((t_uint8 *)mem + i);
+		ASSERT_EQ(g_dym.tiny_zone.head->allocated, 1);
+	}
 }
 
 TEST_F(FreeTest, free_tiny_from_0)
@@ -84,7 +96,7 @@ TEST_F(FreeTest, free_tiny_from_3)
 
 	// free
 	for (int i=3; i >= 0; i--) {
-		for (t_uint16 j=(smallest_block_count >> i) - 1; j >= 0; j--) {
+		for (int j=(smallest_block_count >> i) - 1; j >= 0; j--) {
 			free(mems[i][j]);
 		}
 		if (i == 0)
@@ -137,12 +149,12 @@ TEST_F(FreeTest, free_small_from_3)
 
 	// free
 	for (int i=3; i >= 0; i--) {
-		for (t_uint16 j=(smallest_block_count >> i) - 1; j >= 0; j--) {
+		for (int j=(smallest_block_count >> i) - 1; j >= 0; j--) {
 			free(mems[i][j]);
 		}
 		if (i == 0)
-			ASSERT_EQ(get_pool_count(&g_dym.tiny_zone), 1);
+			ASSERT_EQ(get_pool_count(&g_dym.small_zone), 1);
 		else
-			ASSERT_EQ(get_pool_count(&g_dym.tiny_zone), i);
+			ASSERT_EQ(get_pool_count(&g_dym.small_zone), i);
 	}
 }

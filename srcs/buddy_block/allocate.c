@@ -82,8 +82,6 @@ void			*alloc_block(
 	t_uint8		avail_level;
 	t_uint64	relative_addr;
 
-	if (size == 0)
-		return (0x0);
 	level = get_block_level(size, smallest_block_size);
 	idx = NO_AVAIL_BLOCK;
 	avail_level = level;
@@ -101,5 +99,6 @@ void			*alloc_block(
 	set_block_stat(idx, 0, pool->stats[level]);
 	relative_addr = (smallest_block_size << level) * idx;
 	pool->sizes[relative_addr / smallest_block_size] = size;
+	pool->allocated++;
 	return (pool->data + relative_addr);
 }
