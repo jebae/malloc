@@ -25,21 +25,17 @@ void	merge_block(t_uint16 idx, t_uint8 level, t_uint8 **stats)
 void	free_block(
 	void *ptr, t_uint32 smallest_block_size, t_mem_pool *pool)
 {
-	t_uint64	relative_addr;
 	t_uint16	size;
 	t_uint8		level;
 	t_uint16	idx;
 
-	relative_addr = (t_uint8 *)ptr - pool->data;
-	if (relative_addr % smallest_block_size > 0)
-		return ;
-	size = pool->sizes[relative_addr / smallest_block_size];
+	size = get_block_size(ptr, smallest_block_size, pool);
 	if (size == 0)
 		return ;
-	pool->sizes[relative_addr / smallest_block_size] = 0;
+	set_block_size(ptr, 0, smallest_block_size, pool);
 	level = get_block_level(size, smallest_block_size);
 	size = smallest_block_size << level;
-	idx = relative_addr / size;
+	idx = ((t_uint8 *)ptr - pool->data) / size;
 	set_block_stat(idx, 1, pool->stats[level]);
 	merge_block(idx, level, pool->stats);
 	pool->allocated--;

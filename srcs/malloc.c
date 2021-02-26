@@ -60,6 +60,8 @@ void		*malloc(t_uint64 size)
 		init_dynamic_memory(&g_dym);
 		is_initialized = 1;
 	}
+	if (size == 0)
+		return (0x0);
 	type = get_zone_type(size);
 	if (type == TINY || type == SMALL)
 	{

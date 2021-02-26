@@ -39,6 +39,13 @@ TEST_F(MallocTest, allocate_1)
 	ASSERT_EQ(*mem, 42);
 }
 
+TEST_F(MallocTest, allocate_0)
+{
+	char *mem = (char *)malloc(0);
+
+	ASSERT_EQ((long)mem, 0x0);
+}
+
 TEST_F(MallocTest, allocate_tiny)
 {
 	t_uint32	smallest_block_size = g_dym.tiny_zone.smallest_block_size;

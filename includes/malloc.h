@@ -61,6 +61,13 @@ typedef struct			s_dynamic_mem
 t_uint8		get_block_level(t_uint64 size, t_uint32 smallest_block_size);
 void		set_block_stat(t_uint16 idx, t_int32 flag, t_uint8 *stats);
 t_uint32	get_block_stat(t_uint16 idx, t_uint8 *stats);
+
+t_uint16	get_block_size(
+	void *ptr, t_uint32 smallest_block_size, t_mem_pool *pool);
+
+void		set_block_size(
+	void *ptr, t_uint16 size, t_uint32 smallest_block_size, t_mem_pool *pool);
+
 t_uint16	get_avail_block(t_uint8 *stats, t_uint16 count);
 
 t_uint16	split_block(
@@ -82,6 +89,7 @@ t_uint16	get_smallest_block_count(
 t_mem_pool	*init_mem_pool(void *mem, t_uint16 smallest_block_count);
 t_mem_pool	*alloc_mem_pool(t_uint32 mem_size, t_uint32 biggest_block_size);
 void		free_mem_pool(t_mem_pool *pool, t_uint64 mem_size);
+t_mem_pool	*find_mem_pool(void *ptr, t_mem_zone *zone);
 
 /* init dynamic memory */
 int			init_dynamic_memory(t_dynamic_mem *dym);
@@ -89,5 +97,11 @@ int			init_dynamic_memory(t_dynamic_mem *dym);
 /* malloc */
 t_zone_type	get_zone_type(t_uint64 size);
 void		*malloc(t_uint64 size);
+
+/* free */
+void		free(void *ptr);
+
+/* realloc */
+void		*realloc(void *ptr, t_uint64 size);
 
 #endif
