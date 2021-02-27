@@ -68,7 +68,7 @@ static void	show_paged(t_mem_page *page, t_uint64 *total)
 	}
 }
 
-void	show_alloc_mem(void)
+void		show_alloc_mem(void)
 {
 	t_uint64	total;
 

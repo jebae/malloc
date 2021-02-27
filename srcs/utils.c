@@ -54,3 +54,12 @@ t_uint32	get_page_count(t_mem_page *page)
 	}
 	return (count);
 }
+
+t_uint64	get_data_limit(void)
+{
+	struct rlimit	rl;
+
+	if (getrlimit(RLIMIT_DATA, &rl) == -1)
+		return (0);
+	return (rl.rlim_max);
+}

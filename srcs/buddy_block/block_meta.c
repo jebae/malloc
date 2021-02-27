@@ -3,7 +3,6 @@
 void		set_block_stat(t_uint16 idx, t_int32 flag, t_uint8 *stats)
 {
 	stats += idx / 8;
-
 	if (flag == 0)
 		*stats &= ~(1 << (idx % 8));
 	else

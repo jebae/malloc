@@ -56,8 +56,8 @@ static void	free_paged(void *ptr)
 
 void		free(void *ptr)
 {
-	if (!g_dym.is_initialized)
-		init_dynamic_memory(&g_dym);
+	if (!g_dym.is_initialized && init_dynamic_memory(&g_dym) == -1)
+		return ;
 	if (free_blocked(ptr, &g_dym.tiny_zone))
 		return ;
 	if (free_blocked(ptr, &g_dym.small_zone))

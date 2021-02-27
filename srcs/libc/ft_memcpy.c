@@ -13,7 +13,7 @@ static void	copy_by_1byte(
 	}
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void		*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	unsigned long	*p_dst;
 	unsigned long	*p_src;

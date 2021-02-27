@@ -56,7 +56,6 @@ $(OBJ_DIR)/LIBC_%.o: $(SRC_DIR)/libc/%.c
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
-	$(MAKE) -C $(LIBFT)
 	$(CC) $(CFLAGS) $(INCLUDES) -shared -o libft_malloc_$(HOSTTYPE).so $(OBJS)
 	ln -sf libft_malloc_$(HOSTTYPE).so $@
 

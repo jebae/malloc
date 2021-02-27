@@ -36,6 +36,8 @@ int			init_dynamic_memory(t_dynamic_mem *dym)
 	t_uint32	page_size;
 
 	page_size = (t_uint32)getpagesize();
+	if (page_size < 2048)
+		return (-1);
 	mem = mmap(0, (8 + 128) * page_size,
 		PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
 	if (mem == MAP_FAILED)

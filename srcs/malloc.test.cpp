@@ -34,6 +34,16 @@ TEST_F(MallocTest, allocate_0)
 	ASSERT_EQ((long)mem, 0x0);
 }
 
+TEST_F(MallocTest, allocate_limit)
+{
+	struct rlimit	rl;
+
+	getrlimit(RLIMIT_DATA, &rl);
+	char 	*mem = (char *)malloc(rl.rlim_max + 1);
+
+	ASSERT_EQ((long)mem, 0x0);
+}
+
 TEST_F(MallocTest, allocate_tiny)
 {
 	t_uint32	smallest_block_size = g_dym.tiny_zone.smallest_block_size;
