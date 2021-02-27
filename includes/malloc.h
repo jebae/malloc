@@ -3,15 +3,8 @@
 
 #include <stdio.h>
 #include <sys/mman.h>
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-# include "libft.h"
-#ifdef __cplusplus
-}
-#endif
+#include <unistd.h>
+#include <stdlib.h>
 
 # define NO_AVAIL_BLOCK	0xFFFF
 
@@ -63,6 +56,7 @@ typedef struct			s_dynamic_mem
 	t_mem_zone	tiny_zone;
 	t_mem_zone	small_zone;
 	t_mem_page	*page;
+	int			is_initialized;
 }						t_dynamic_mem;
 
 /* buddy block */
@@ -96,7 +90,6 @@ t_uint16	get_smallest_block_count(
 
 t_mem_pool	*init_mem_pool(void *mem, t_uint16 smallest_block_count);
 t_mem_pool	*alloc_mem_pool(t_uint32 mem_size, t_uint32 biggest_block_size);
-void		free_mem_pool(t_mem_pool *pool, t_uint64 mem_size);
 
 /* memory page */
 t_uint64	get_adjusted_page_size(t_uint64 size);
@@ -113,9 +106,16 @@ t_uint32	get_pool_count(t_mem_zone *zone);
 t_uint32	get_page_count(t_mem_page *page);
 t_zone_type	get_zone_type(t_uint64 size);
 
+/* libc */
+void		*ft_memset(void *b, int c, size_t len);
+void		*ft_memcpy(void *dst, const void *src, size_t n);
+void		ft_putstr(char *s);
+void		ft_putchar(char c);
+
 /* main functions */
 void		*malloc(t_uint64 size);
 void		free(void *ptr);
 void		*realloc(void *ptr, t_uint64 size);
+void		show_alloc_mem(void);
 
 #endif

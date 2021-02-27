@@ -11,7 +11,8 @@ static int	free_blocked(void *ptr, t_mem_zone *zone)
 	cur = zone->head;
 	while (cur)
 	{
-		if (cur->data <= ptr && ptr < cur->data + zone->pool_size)
+		if (cur->data <= (t_uint8 *)ptr
+			&& (t_uint8 *)ptr < cur->data + zone->pool_size)
 		{
 			free_block(ptr, zone->smallest_block_size, cur);
 			if (cur->allocated == 0 && cur != zone->head)
@@ -55,6 +56,8 @@ static void	free_paged(void *ptr)
 
 void		free(void *ptr)
 {
+	if (!g_dym.is_initialized)
+		init_dynamic_memory(&g_dym);
 	if (free_blocked(ptr, &g_dym.tiny_zone))
 		return ;
 	if (free_blocked(ptr, &g_dym.small_zone))

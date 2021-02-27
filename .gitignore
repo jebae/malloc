@@ -1,4 +1,7 @@
 .vscode
-test
+test*
 objs
 *.out
+test_script
+*.so
+*.sh

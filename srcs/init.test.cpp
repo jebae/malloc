@@ -6,7 +6,10 @@ TEST(init_dynamic_memory, _)
 	t_dynamic_mem	mem;
 	t_uint32		page_size = (t_uint32)getpagesize();
 
+	mem.is_initialized = 0;
+
 	init_dynamic_memory(&mem);
+	ASSERT_EQ(mem.is_initialized, 1);
 
 	// tiny
 	ASSERT_NE((long)mem.tiny_zone.head, NULL);

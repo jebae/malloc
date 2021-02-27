@@ -44,5 +44,6 @@ int			init_dynamic_memory(t_dynamic_mem *dym)
 	init_small_zone(page_size,
 		(t_uint8 *)mem + 8 * page_size, &dym->small_zone);
 	dym->page = 0x0;
+	dym->is_initialized = 1;
 	return (0);
 }

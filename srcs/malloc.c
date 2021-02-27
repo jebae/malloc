@@ -53,15 +53,11 @@ static void *alloc_paged_memory(t_uint64 size)
 
 void		*malloc(t_uint64 size)
 {
-	static int	is_initialized = 0;
 	t_zone_type	type;
 	t_mem_zone	*zone;
 
-	if (!is_initialized)
-	{
+	if (!g_dym.is_initialized)
 		init_dynamic_memory(&g_dym);
-		is_initialized = 1;
-	}
 	if (size == 0)
 		return (0x0);
 	type = get_zone_type(size);

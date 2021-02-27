@@ -7,7 +7,8 @@ t_mem_pool	*find_mem_pool(void *ptr, t_mem_zone *zone)
 	cur = zone->head;
 	while (cur)
 	{
-		if (cur->data <= ptr && ptr < cur->data + zone->pool_size)
+		if (cur->data <= (t_uint8 *)ptr
+			&& (t_uint8 *)ptr < cur->data + zone->pool_size)
 			return (cur);
 		cur = cur->next;
 	}

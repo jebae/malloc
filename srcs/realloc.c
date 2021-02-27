@@ -86,6 +86,8 @@ void				*realloc(void *ptr, t_uint64 size)
 	t_uint32	origin_size;
 	t_zone_type	origin_zone_type;
 
+	if (!g_dym.is_initialized)
+		init_dynamic_memory(&g_dym);
 	if (size == 0)
 	{
 		free(ptr);
