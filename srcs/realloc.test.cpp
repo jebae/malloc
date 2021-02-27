@@ -9,7 +9,7 @@ class ReallocTest: public ::testing::Test {
 	}
 };
 
-TEST_F(ReallocTest, tiny_same_address)
+TEST_F(ReallocTest, tiny_expected_same_address)
 {
 	char		*origin;
 	char		*realloced;
@@ -34,7 +34,7 @@ TEST_F(ReallocTest, tiny_same_address)
 	ASSERT_EQ(origin, realloced);
 }
 
-TEST_F(ReallocTest, tiny_different_address)
+TEST_F(ReallocTest, tiny_expected_different_address)
 {
 	char		*origin;
 	char		*realloced;
@@ -67,7 +67,7 @@ TEST_F(ReallocTest, tiny_different_address)
 	ASSERT_STREQ(origin, realloced);
 }
 
-TEST_F(ReallocTest, small_same_address)
+TEST_F(ReallocTest, small_expected_same_address)
 {
 	char		*origin;
 	char		*realloced;
@@ -92,7 +92,7 @@ TEST_F(ReallocTest, small_same_address)
 	ASSERT_EQ(origin, realloced);
 }
 
-TEST_F(ReallocTest, small_different_address)
+TEST_F(ReallocTest, small_expected_different_address)
 {
 	char		*origin;
 	char		*realloced;
@@ -117,9 +117,66 @@ TEST_F(ReallocTest, small_different_address)
 	realloced = (char *)realloc(origin, (size << 2) + 10);
 	ASSERT_NE(origin, realloced);
 	ASSERT_STREQ(origin, realloced);
+
+	origin = (char *)malloc((size << 3) - 10);
+	strcpy(origin, "hogwart");
+	realloced = (char *)realloc(origin, (size << 3) + 10);
+	ASSERT_NE(origin, realloced);
+	ASSERT_STREQ(origin, realloced);
 }
 
-TEST_F(ReallocTest, small_to_large)
+TEST_F(ReallocTest, large_expected_same_address)
+{
+	char		*origin;
+	char		*realloced;
+
+	origin = (char *)malloc(getpagesize() + 1);
+	realloced = (char *)realloc(origin, getpagesize() * 2 - sizeof(t_mem_page));
+	ASSERT_EQ(origin, realloced);
+}
+
+TEST_F(ReallocTest, large_expected_different_address)
+{
+	char		*origin;
+	char		*realloced;
+	const char	*str = "hogwart";
+
+	origin = (char *)malloc(getpagesize() + 1);
+	strcpy(origin, str);
+	realloced = (char *)realloc(origin, getpagesize() * 2);
+	ASSERT_NE(origin, realloced);
+	ASSERT_STREQ(str, realloced);
+}
+
+TEST_F(ReallocTest, large_expected_different_address_to_small_zone)
+{
+	char		*origin;
+	char		*realloced;
+	const char	*str = "hogwart";
+
+	origin = (char *)malloc(getpagesize() + 1);
+	strcpy(origin, str);
+	realloced = (char *)realloc(origin, getpagesize());
+	ASSERT_NE(origin, realloced);
+	ASSERT_STREQ(str, realloced);
+	ASSERT_EQ((long)g_dym.page, NULL);
+}
+
+TEST_F(ReallocTest, large_expected_different_address_to_tiny_zone)
+{
+	char		*origin;
+	char		*realloced;
+	const char	*str = "hogwart";
+
+	origin = (char *)malloc(getpagesize() + 1);
+	strcpy(origin, str);
+	realloced = (char *)realloc(origin, getpagesize() / 128);
+	ASSERT_NE(origin, realloced);
+	ASSERT_STREQ(str, realloced);
+	ASSERT_EQ((long)g_dym.page, NULL);
+}
+
+TEST_F(ReallocTest, realloc_bigger)
 {
 	char		*origin;
 	char		*realloced;
@@ -131,7 +188,7 @@ TEST_F(ReallocTest, small_to_large)
 	ASSERT_STREQ(origin, realloced);
 }
 
-TEST_F(ReallocTest, large_to_small)
+TEST_F(ReallocTest, realloc_smaller)
 {
 	char		*origin;
 	char		*realloced;

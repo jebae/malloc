@@ -40,6 +40,14 @@ typedef struct			s_mem_pool
 	t_uint8				*data;
 }						t_mem_pool;
 
+typedef struct			s_mem_page
+{
+	struct s_mem_page	*next;
+	t_uint64			size;
+	t_uint8				*data;
+}						t_mem_page;
+
+
 typedef struct			s_mem_zone
 {
 	t_mem_pool	*head;
@@ -54,7 +62,7 @@ typedef struct			s_dynamic_mem
 {
 	t_mem_zone	tiny_zone;
 	t_mem_zone	small_zone;
-	t_mem_zone	large_zone;
+	t_mem_page	*page;
 }						t_dynamic_mem;
 
 /* buddy block */
@@ -89,19 +97,25 @@ t_uint16	get_smallest_block_count(
 t_mem_pool	*init_mem_pool(void *mem, t_uint16 smallest_block_count);
 t_mem_pool	*alloc_mem_pool(t_uint32 mem_size, t_uint32 biggest_block_size);
 void		free_mem_pool(t_mem_pool *pool, t_uint64 mem_size);
-t_mem_pool	*find_mem_pool(void *ptr, t_mem_zone *zone);
+
+/* memory page */
+t_uint64	get_adjusted_page_size(t_uint64 size);
+t_uint32	get_required_page_count(t_uint64 size);
+t_mem_page	*alloc_mem_page(t_uint64 size);
+t_mem_page	*find_mem_page(void *ptr, t_mem_page *page);
 
 /* init dynamic memory */
 int			init_dynamic_memory(t_dynamic_mem *dym);
 
-/* malloc */
+/* utils */
+t_mem_pool	*find_mem_pool(void *ptr, t_mem_zone *zone);
+t_uint32	get_pool_count(t_mem_zone *zone);
+t_uint32	get_page_count(t_mem_page *page);
 t_zone_type	get_zone_type(t_uint64 size);
+
+/* main functions */
 void		*malloc(t_uint64 size);
-
-/* free */
 void		free(void *ptr);
-
-/* realloc */
 void		*realloc(void *ptr, t_uint64 size);
 
 #endif

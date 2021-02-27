@@ -2,20 +2,6 @@
 
 t_dynamic_mem	g_dym;
 
-t_zone_type	get_zone_type(t_uint64 size)
-{
-	t_uint64	page_size;
-
-	page_size = (t_uint32)getpagesize();
-	if (size <= (page_size >> 4))
-		return (TINY);
-	if (size <= page_size)
-		return (SMALL);
-	return (LARGE);
-}
-
-// static void *alloc_paged_memory -> large
-
 /*
 ** try allocation zone->tail first which is recent allocated
 ** if not available search from head to tail
@@ -49,6 +35,22 @@ static void	*alloc_blocked_memory(t_uint32 size, t_mem_zone *zone)
 		zone->smallest_block_count, zone->tail));
 }
 
+static void *alloc_paged_memory(t_uint64 size)
+{
+	t_mem_page	*prev;
+
+	prev = g_dym.page;
+	if (prev == 0x0)
+	{
+		g_dym.page = alloc_mem_page(size);
+		return ((g_dym.page) ? (void *)g_dym.page->data : 0x0);
+	}
+	while (prev->next)
+		prev = prev->next;
+	prev->next = alloc_mem_page(size);
+	return ((prev->next) ? (void *)prev->next->data : 0x0);
+}
+
 void		*malloc(t_uint64 size)
 {
 	static int	is_initialized = 0;
@@ -68,5 +70,5 @@ void		*malloc(t_uint64 size)
 		zone = (type == TINY) ? &g_dym.tiny_zone : &g_dym.small_zone;
 		return (alloc_blocked_memory(size, zone));
 	}
-	return (0x0);
+	return (alloc_paged_memory(size));
 }

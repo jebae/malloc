@@ -30,12 +30,6 @@ static void	init_small_zone(t_uint32 page_size, void *mem, t_mem_zone *zone)
 	zone->pool_size = zone->smallest_block_count * zone->smallest_block_size;
 }
 
-static void	init_large_zone(t_mem_zone *zone)
-{
-	zone->head = 0x0;
-	zone->tail = 0x0;
-}
-
 int			init_dynamic_memory(t_dynamic_mem *dym)
 {
 	void		*mem;
@@ -49,6 +43,6 @@ int			init_dynamic_memory(t_dynamic_mem *dym)
 	init_tiny_zone(page_size, mem, &dym->tiny_zone);
 	init_small_zone(page_size,
 		(t_uint8 *)mem + 8 * page_size, &dym->small_zone);
-	init_large_zone(&dym->large_zone);
+	dym->page = 0x0;
 	return (0);
 }

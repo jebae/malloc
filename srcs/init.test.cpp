@@ -27,6 +27,5 @@ TEST(init_dynamic_memory, _)
 	ASSERT_EQ(mem.small_zone.mem_size, page_size * 128);
 
 	// large
-	ASSERT_EQ((long)mem.large_zone.head, NULL);
-	ASSERT_EQ((long)mem.large_zone.tail, NULL);
+	ASSERT_EQ((long)mem.page, NULL);
 }
