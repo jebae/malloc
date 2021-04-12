@@ -1,7 +1,7 @@
 # malloc
 
 malloc project clone UNIX dynamic memory allocation function `malloc`, `free`, `realloc`.
-In basic, `malloc` use `mmap` to allocate private purposed page without mapping to specific file. `free` uses `unmap` to deallocate page.
+In basic, `malloc` use `mmap` to allocate private purposed page without mapping to specific file. `free` uses `munmap` to deallocate page.
 To prevent memory external fragmentation, this project use multi level buddy block algorithm.
 
 <br/><br/>
